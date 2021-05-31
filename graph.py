@@ -34,3 +34,6 @@ class Graph:
                 start.extend(next_vertices)
             
         return False 
+
+    def retrieve_vertex(sefl, key):
+        return self.graph_dict[key]

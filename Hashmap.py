@@ -117,6 +117,10 @@ class HashMap:
     def get_array(self):
         return self.array
 
+
+
+### Test Values ###
+#.delete() deletes the entire the list#
 test = HashMap(4)
 
 test.setter(1, 2)
@@ -126,7 +130,7 @@ test.delete(1)
 print(test.get_array())
 
 
-servers = test.retrieve(3)
+servers = test.retrieve(1)
 
 for i in servers:
     print(i.get_value()[1])
