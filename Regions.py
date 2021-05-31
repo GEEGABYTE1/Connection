@@ -105,6 +105,3 @@ class DoubleLinkedList:
             prev_node.set_link(next_node)
         
         return node_to_remove
-
-    def get_head_node(self):
-        return self.head_node
