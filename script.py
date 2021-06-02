@@ -4,6 +4,7 @@ from graph import Graph
 import hashlib
 from Hashmap import HashMap
 import random
+from vertex import Vertex
 
 
 class Modem:
@@ -60,9 +61,23 @@ class Prompt:
                 
                 s_server = input('Please enter the name of your server: ')
                 if self.server_locator(s_region, s_server) == False:
+                    print('\n')
                     print('Looks like this is a brand new server...')
                     time.sleep(0.1)
-                    print("We are commencing ")
+                    print("We are commencing the process of creating a new server...")
+                    new_server = Graph()
+                    time.sleep(0.2)
+                    print('We are also adding your new modem to the server')
+                    time.sleep(0.1)
+                    print('''Since this is a brand new server, there are no links that either link to other modems or 
+                    link to your modem as your new modem is the only modem online on the server''')
+                    new_modem_vertex = Vertex(new_modem)
+                    new_server.add_vertex(new_modem_vertex)
+                    time.sleep(0.2)
+                    print("Your new server with the modem is now created and is registered on your database! ")
+                else:
+                    pass
+
 
                 
 
@@ -71,12 +86,7 @@ class Prompt:
 
                
 
-                # Add Server to Link
-                current_node = self.database.get_head_node()
-                checker_add = False
-                while current_node:
-                    if current_node.get_value()[0] == s_region:
-                        current_node.get_value()[1].setter()
+                
 
             
             elif prompt == "/add_region":
