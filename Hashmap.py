@@ -46,19 +46,19 @@ class HashMap:
 
 
     def retrieve(self, key):
-        returns = []
+        self.returns = []
         array_index = self.compressor(self.hash(key))
         current_array_value = self.array[array_index]
         current_ll_head_node = current_array_value.get_head_node()
 
         if current_ll_head_node == None:
             print("There is no server there! ")
-            return None 
+            return self.returns  
         
         if current_ll_head_node.get_value()[0] == key:
             current_node = current_ll_head_node
             while current_node:
-                returns.append(current_node)
+                self.returns.append(current_node)
                 current_node = current_node.get_link()
             
         retrieve_collisions = 1
@@ -71,18 +71,18 @@ class HashMap:
 
             if new_ll_head_node == None:
                 print("There is no server there! ")
-                return None 
+                return self.returns
             
             if new_ll_head_node.get_value()[0] == key:
                 current_node = new_ll_head_node
                 while new_ll_head_node:
-                    returns.append(new_ll_head_node)
+                    self.returns.append(new_ll_head_node)
                     current_node = current_node.get_link()
             
             retrieve_collisions += 1
             return 
         
-        return returns 
+        return self.returns 
 
     
     def delete(self, key):
@@ -119,18 +119,3 @@ class HashMap:
 
 
 
-### Test Values ###
-#.delete() deletes the entire the list#
-test = HashMap(4)
-
-test.setter(1, 2)
-test.setter(1, 3)
-test.setter(3, 4)
-test.delete(1)
-print(test.get_array())
-
-
-servers = test.retrieve(1)
-
-for i in servers:
-    print(i.get_value()[1])
