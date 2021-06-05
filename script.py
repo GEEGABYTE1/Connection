@@ -11,6 +11,7 @@ class Prompt:
     wifibase = Graph()
     unregistered_modems = [] 
     registered_modems = []
+    latency = 0
 
     def database(self):
         
@@ -105,6 +106,7 @@ class Prompt:
                                     continue 
                             
                             miliseconds = random.randint(1, 2500)
+                            self.latency += miliseconds 
                             self.wifibase.add_vertex(modem)
                             self.registered_modems.append(modem)
                             self.wifibase.add_edge(modem, link_router, miliseconds)
@@ -133,6 +135,23 @@ class Prompt:
                     time.sleep(0.2)
                 
                 self.wifibase.find_path(modem_one, modem_two)
+
+            elif prompt == "/check_total_latency":
+                time.sleep(0.1)
+                print('Total Latency of Network: {}'.format(self.latency))
+                print('-'*24)
+                print('Average Latency of Network: {}'.format(self.latency/len(self.registered_modems)))
+
+            elif prompt == "/delete":
+                time.sleep(0.1)
+                deleted_modem = input("Please enter a modem you want to delete: ")
+                self.wifibase.graph_dict.pop(deleted_modem, "That Modem is not on the server ")
+
+                try:
+                    self.wifibase.graph_dict.get(deleted_modem)
+                except KeyError:
+                    print('The modem has been successfully deleted')
+                
 
                             
 
