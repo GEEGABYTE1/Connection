@@ -138,6 +138,7 @@ class Prompt:
 
             elif prompt == "/check_total_latency":
                 time.sleep(0.1)
+                print('-'*24)
                 print('Total Latency of Network: {}'.format(self.latency))
                 print('-'*24)
                 print('Average Latency of Network: {}'.format(self.latency/len(self.registered_modems)))
@@ -148,9 +149,18 @@ class Prompt:
                 self.wifibase.graph_dict.pop(deleted_modem, "That Modem is not on the server ")
 
                 try:
-                    self.wifibase.graph_dict.get(deleted_modem)
+                    print(self.wifibase.graph_dict[deleted_modem])
                 except KeyError:
                     print('The modem has been successfully deleted')
+
+            elif prompt == "/view_modems":
+                for i in list(self.wifibase.graph_dict.keys()):
+                    print('-'*24)
+                    print(i)
+                print("-"*24)
+                time.sleep(0.1)
+                print('Here are currently all your modems on your server ')
+            
                 
 
                             
