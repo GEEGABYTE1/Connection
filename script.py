@@ -216,6 +216,14 @@ class Prompt:
                         time.sleep(0.1)
                     else:
                         print('The Ip matches ')
+
+            elif prompt == "/quit":
+                print('You have successfully quit')
+                break 
+            
+            else:
+                print("That command does not seem to be valid")
+
                 
             
                 
