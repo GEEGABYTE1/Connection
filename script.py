@@ -194,9 +194,28 @@ class Prompt:
                 
 
             elif prompt == "/check_ip":
+                print("\n")
                 modem = input('Type in the modem you want to verify the ip for: ')
-                
+                modem_found = None 
+                try:
+                    modem_found = self.wifibase.graph_dict[modem]
+                except KeyError:
+                    pass 
+                    
+                if modem_found == None:
+                    print("That modem does not seem to be registered in this software. Type \'/add_modem\' to add that specific modem")
+                    time.sleep(0.1)
+                else:
+                    user_ip = print("Please type in the first six characteres of your ip: ")
+                    outcomes = pattern_search(modem_found[-1], user_ip)
 
+                    if len(outcomes) == 0:
+                        print("The Ip you have inputted seems to be incorrect and does not match with the one that has been registered under this software")
+                        time.sleep(0.1)
+                        print("If this is an accident, please type in the right ip address again, or delete the registered modem with \'/delete\' and re-enter the modem with the correct ip")
+                        time.sleep(0.1)
+                    else:
+                        print('The Ip matches ')
                 
             
                 
