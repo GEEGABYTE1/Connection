@@ -6,14 +6,14 @@ def pattern_search(text, pattern):
     print('Input Pattern: {}'.format(pattern))
 
     for idx in range(len(text)):
-        print("Text Index: {}".format(idx))
+        
         match_count = 0
         if num_skips > 0:
             num_skips -= 1
             continue 
         
         for j in range(len(pattern)):
-            print('Pattern Index: {}'.format(j))
+           
             if pattern[j] == text[j + idx]:
                 print("Match Found! ")
                 print('Match count at {}'.format(match_count))

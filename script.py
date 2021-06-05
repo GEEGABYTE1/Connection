@@ -1,9 +1,10 @@
-
+from pattern_search import pattern_search
 from graph import Graph
 from vertex import Vertex
 import hashlib
 import time 
 import random 
+
 
 
 
@@ -22,7 +23,7 @@ class Prompt:
 
             if prompt == '/add_modem':
                 name = input('Name of the modem: ')
-                ip_address = input('First three numbers of ip: ')
+                ip_address = input('First 6 characters of the Ip address (Do not include periods): ')
                 ip_address = ip_address.encode()
                 ip_address = hashlib.sha224(ip_address).hexdigest()
 
@@ -160,6 +161,43 @@ class Prompt:
                 print("-"*24)
                 time.sleep(0.1)
                 print('Here are currently all your modems on your server ')
+
+            elif prompt == "/ip_validation":
+                ips = []
+                for i in self.registered_modems:
+                    ips.append(i.value[-1])
+                
+                user_ip = input("Please enter the first 6 characters of your ip: ")
+                user_ip = user_ip.encode()
+                user_ip = hashlib.sha224(user_ip).hexdigest()
+
+                valid_ips = []
+                for ip in ips:
+                    outcome = pattern_search(ip, user_ip)
+                    if len(outcome) > 0:
+                        valid_ips.append(ip)
+                    else:
+                        continue
+                
+                if len(valid_ips):
+                    print("That Ip seems to be either fake or does not seem to be registered under this software ")
+                else:
+                    for i in ips:
+                        print("Your Ip is registered {}".format(i))
+                        
+                        for k in self.registered_modems:
+                            if k.value[-1] == i:
+                                print("That ip is from the modem {}".format(k))
+                                break 
+                            else:
+                                continue 
+                
+
+            elif prompt == "/check_ip":
+                modem = input('Type in the modem you want to verify the ip for: ')
+                
+
+                
             
                 
 
