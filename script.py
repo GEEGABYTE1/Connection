@@ -23,33 +23,42 @@ class Prompt:
 
             if prompt == '/add_modem':
                 name = input('Name of the modem: ')
-                ip_address = input('First 6 characters of the Ip address (Do not include periods): ')
-                ip_address = ip_address.encode()
-                ip_address = hashlib.sha224(ip_address).hexdigest()
-
-                validation = False 
-                
-                for i in self.unregistered_modems:
-                    if len(self.unregistered_modems) == 0:
-                        break 
-                    elif i.value[-1] == ip_address:
-                        validation = True 
-                    elif i.value[0] == name:
-                        validation = True
-                        break
-                    else:
-                        continue 
-
-                if validation == True:
-                    print("There is already a modem that either has the same name or same ip address in our database")
+                ip_address = input('First 5 characters of the Ip address (Include Periods, but they do not count as a character): ')
+                if len(ip_address) > 6 or not '.' in ip_address:
+                    print("Looks like the Ip Adress you have prompted exceeds the 5 character limit or does not follow the following format.")
                     time.sleep(0.1)
-                    
+                    print('-'*7)
+                    print("The format should be: 123.45 ")
+                    print('-'*7)
+                    time.sleep(0.1)
+                    print('You have printed: {}'.format(ip_address))
                 else:
-                    modem_list = [name, ip_address]
-                    vertex_modem = Vertex(modem_list)
-                    self.unregistered_modems.append(vertex_modem)
-                    time.sleep(0.1)
-                    print('New Modem added. Type \'/register\' to register the modem in to the system')
+                    ip_address = ip_address.encode()
+                    ip_address = hashlib.sha224(ip_address).hexdigest()
+
+                    validation = False 
+                    
+                    for i in self.unregistered_modems:
+                        if len(self.unregistered_modems) == 0:
+                            break 
+                        elif i.value[-1] == ip_address:
+                            validation = True 
+                        elif i.value[0] == name:
+                            validation = True
+                            break
+                        else:
+                            continue 
+
+                    if validation == True:
+                        print("There is already a modem that either has the same name or same ip address in our database")
+                        time.sleep(0.1)
+                        
+                    else:
+                        modem_list = [name, ip_address]
+                        vertex_modem = Vertex(modem_list)
+                        self.unregistered_modems.append(vertex_modem)
+                        time.sleep(0.1)
+                        print('New Modem added. Type \'/register\' to register the modem in to the system')
             
             elif prompt == "/register":
                 modem_name = input('Name of the modem: ')
@@ -208,7 +217,7 @@ class Prompt:
                     else:
                         continue
                 
-                if len(valid_ips):
+                if len(valid_ips) == 0:
                     print("That Ip seems to be either fake or does not seem to be registered under this software ")
                 else:
                     for i in ips:
@@ -216,7 +225,7 @@ class Prompt:
                         
                         for k in self.registered_modems:
                             if k.value[-1] == i:
-                                print("That ip is from the modem {}".format(k))
+                                print("That ip is from the modem \'{}\'".format(k.value[0]))
                                 break 
                             else:
                                 continue 
