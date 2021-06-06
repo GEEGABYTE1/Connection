@@ -29,6 +29,8 @@ The software has two underlying arrays (`registered_modems` and `unregistered_mo
 
 For the functions that involve the ip address (`/check_ip`, and `ip_validation`), the *Naive Search Algorithm* is implemented to keep track of each letter of between the prompted ip from the user and the actual ip of the modem. If the prompted ip matches the actual ip of the modem, the algorithm will return a list of indices where the match was found. 
 
+Please run `script.py` if you want to run the software as a whole.
+
 # Technical Information 🔌
 
 The *Naive Search Algorithm* has a time complexity of `O(n + k)` and space complexity of `O(n)`. 
