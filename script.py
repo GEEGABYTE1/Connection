@@ -73,6 +73,7 @@ class Prompt:
                         self.wifibase.add_vertex(modem)
                         self.registered_modems.append(modem)
                         print('Modem added')
+                        self.unregistered_modems.remove(modem)
                         time.sleep(0.1)
                         print('Once there are more modems (>1) defined in the software, you will be able to add links')
                     else:
@@ -88,14 +89,18 @@ class Prompt:
                         time.sleep(0.1)
                         router_name = input('Please enter one of the modem\'s name exactly to add a link. If you wish to have no link, please type \'None\': ')
 
-                        if not router_name in temp_modem_names:                                     # If the link is not even defined 
-                            print('That router does not seem to be in the sever ')
-                            time.sleep(0.1)
-                        elif router_name == "None" or router_name == "None ":                       # If the user wants no link
+                        if router_name == "None" or router_name == "None ":                       # If the user wants no link
                             self.wifibase.add_vertex(modem)
                             self.registered_modems.append(modem)
                             print('Modem added with no link ')
+                            self.unregistered_modems.remove(modem)
                             time.sleep(0.1)
+                        
+
+                        elif not router_name in temp_modem_names:                                     # If the link is not even defined 
+                            print('That router does not seem to be in the sever ')
+                            time.sleep(0.1)
+                        
                         
                         elif router_name in temp_modem_names:                                       # If link is defined
                             link_router = None 
@@ -113,6 +118,7 @@ class Prompt:
                             self.wifibase.add_edge(modem, link_router, miliseconds)
 
                             print('\'{modem1}\' is linked to \'{modem2}\' with a return speed of {latency} m/s '.format(modem1=modem.value[0], modem2=link_router.value[0], latency=miliseconds))
+                            self.unregistered_modems.remove(modem)
 
 
             elif prompt == "/check_link":
@@ -147,20 +153,43 @@ class Prompt:
             elif prompt == "/delete":
                 time.sleep(0.1)
                 deleted_modem = input("Please enter a modem you want to delete: ")
-                self.wifibase.graph_dict.pop(deleted_modem, "That Modem is not on the server ")
+                
+                if len(list(self.wifibase.graph_dict.keys())) == 0:
+                    print("There is no modem to remove as the server is empty! ")
+                else:
+                    
+                    modem_checker = None
+                    modem_vertex = None
+                    for name, vertex in self.wifibase.graph_dict.items():
+                        if deleted_modem == name:
+                            modem_checker = True 
+                            modem_vertex = vertex
+                            break 
+                        else:
+                            continue 
+                    if modem_checker == True:
+                        self.wifibase.graph_dict.pop(deleted_modem)
 
-                try:
-                    print(self.wifibase.graph_dict[deleted_modem])
-                except KeyError:
-                    print('The modem has been successfully deleted')
+                        try:
+                            print(self.wifibase.graph_dict[deleted_modem])
+                        except KeyError:
+                            print('The modem has been successfully deleted')
+                            self.registered_modems.remove(modem_vertex)
+                    else:
+                        print('That modem is not on the server')
 
             elif prompt == "/view_modems":
-                for i in list(self.wifibase.graph_dict.keys()):
+                if len(self.registered_modems) == 0:
+                    time.sleep(0.1)
+                    print("The sever is empty")
                     print('-'*24)
-                    print(i)
-                print("-"*24)
-                time.sleep(0.1)
-                print('Here are currently all your modems on your server ')
+                else:
+                    for i in list(self.wifibase.graph_dict.keys()):
+                        print('-'*24)
+                        print(i)
+                    print("-"*24)
+                    time.sleep(0.1)
+                    print('Here are currently all your modems on your server ')
 
             elif prompt == "/ip_validation":
                 ips = []
