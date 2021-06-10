@@ -8,7 +8,7 @@ Connection brings a new, innovative, and easy approach to analyze network server
 
 Users will first be prompted to type a certain command after the `:` (colon). Commands vary from: 
 
- ## Database commands
+ ## Database commands 💽
  *These commands will be printed in the terminal once you run the file*
  -`/add_server`: Allows the user to add a new server to track their modems/routers.
  - `/remove_server`: Removes a server/network from the software.
@@ -19,7 +19,7 @@ Users will first be prompted to type a certain command after the `:` (colon). Co
  *Note* In order to fully quit the program, users must type `/quit` twice, to break both while loops. 
 
 
- ## Sever commands: 
+ ## Server commands 💾 
  - `/add_modem`: Allows the user to add a modem to the server.
  - `/register`: Registers a certain modem (chosen by the user) onto the network itself, where further analysis of both the modem and the network in general can be done.
  - `/check_link`: Verifies if there is a link between two routers/modems on the network.
@@ -34,12 +34,13 @@ Users will first be prompted to type a certain command after the `:` (colon). Co
 
 
 # More Information 📚
-### Database Information
+
+### Database Information 📼
 If none of the commands listed above are typed on the software, it will return a statement `That command seems to be invalid` and the user will be prompted again until the user types in a valid command. 
 
 Users have the option to type *extra information* about their software when they add the server to the database. This extra information will be printed when the server is accessed to be analyzed or modified with the command `/acess_server`. This allows for people to keep track of information about the server, and will not forget when needed (when modifying and analyzing). In other words, this printing system allows the users to know the information about their server when needed, without memorizing as the software stores it along with the other information about the server.  
 
-### Server Information 
+### Server Information 📟
  If none of the commands listed above are typed on the software, the software will return a statement `That command does not seem to be valid` and the user will be prompted again until the the user types in a valid command. 
 
  Ip addresses must be typed as 5 characters only (for ex, `123.45`) when prompted. Example will printed as well when prompted to type an ip address.
