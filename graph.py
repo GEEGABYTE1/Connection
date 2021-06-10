@@ -19,7 +19,7 @@ class Graph:
         seen = {}
         while len(start) > 0:
             current_vertex = start.pop()
-            print(current_vertex)
+            #print(current_vertex)
             seen[current_vertex] = True 
 
             if current_vertex == end_vertex:

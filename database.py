@@ -1,146 +1,7 @@
 import time
 from graph import Graph
 from script import Prompt
-
-
-class Node:
-    def __init__(self, value, link=None, prev_link=None):
-        self.value = value 
-        self.link = link  
-        self.prev_link = prev_link 
-
-
-    def get_value(self):
-        return self.value 
-
-    def get_link(self):
-        return self.link 
-
-    def set_link(self, new_link):
-        self.link = new_link 
-
-    def set_prev_link(self, new_link):
-        self.prev_link = new_link 
-
-    def get_prev_link(self):
-        return self.prev_link 
-
-class DoubleLinkedList:
-    def __init__(self):
-        self.head_node = None 
-        self.tail_node = None 
-        self.nodes = []
-    
-    def add_to_head(self, new_value):
-        new_head = Node(new_value)
-        current_head = self.head_node 
-
-        if current_head != None:
-            current_head.set_prev_link(new_head)
-            new_head.set_link(current_head)
-        
-        self.head_node = new_head 
-        self.nodes.append(new_value[0])
-
-        if self.tail_node == None:
-            self.tail_node = new_head 
-
-
-    def add_to_tail(self, new_value):
-        new_tail = Node(new_value)
-        current_tail = self.tail_node 
-
-        if current_tail != None:
-            current_tail.set_link(new_tail)
-            new_tail.set_prev_link(current_tail)
-        
-        self.tail_node = new_tail 
-        self.nodes.append(new_value[0])
-
-        if self.head_node == None:
-            self.head_node = new_tail 
-        
-
-    
-    def remove_head(self):
-        removed_head = self.head_node 
-        if removed_head == None:
-            return None 
-        else:
-            self.head_node = removed_head.get_link()
-            
-            if self.head_node != None:
-                self.head_node.set_prev_link(None)
-            else:
-                if removed_head == self.tail_node:
-                    self.remove_tail()
-
-        
-        return removed_head.get_value()
-
-    
-    def remove_tail(self):
-        removed_tail = self.tail_node
-        if removed_tail == None:
-            return None 
-        else:
-            self.tail_node = removed_tail.get_prev_link()
-
-            if self.tail_node != None:
-                self.tail_node.set_link(None)
-            else:
-                if removed_tail == self.head_node:
-                    self.remove_head()
-        
-        return removed_tail.get_value()
-
-    
-    def remove_by_value(self, value):
-        node_to_remove = None 
-        current_node = self.head_node 
-
-        while current_node:
-            if current_node.get_value()[0] == value:
-                node_to_remove = current_node 
-                break 
-            current_node = current_node.get_link()
-
-        if current_node == self.head_node:
-            self.remove_head()
-
-        elif current_node == self.tail_node:
-            self.remove_tail()
-        else:
-            next_node = node_to_remove.get_link()
-            prev_node = node_to_remove.get_prev_link()
-
-            next_node.set_prev_link(prev_node)
-            prev_node.set_link(next_node)
-    
-        return node_to_remove.get_value()
-
-    
-    def get_head_node(self):
-        return self.head_node
-
-    def stringify_list(self):
-        current_node = self.get_head_node()
-        while current_node:
-            if current_node.get_value() != None:
-                print("-"*24)
-                print(current_node.get_value()[0])
-            current_node = current_node.get_link()
-
-    
-    def linear_search(self, target_value):
-        current_node = self.get_head_node()
-        while current_node:
-            if current_node.get_value()[0] == target_value:
-                return current_node.get_value()[1]
-            current_node = current_node.get_link()
-
-
-
+from double_ll import DoubleLinkedList
 
 server_base = DoubleLinkedList()
 
@@ -171,7 +32,7 @@ def initial_prompt(server_base=server_base):
         user_prompt = input(':')
         
         if user_prompt == '/add_server':
-            server_name = input('Please type in the name of the server ')
+            server_name = input('Please type in the name of the server: ')
             
             if not server_name in server_base.nodes:
                 server_extra_info = input('Is there any other extra info you would like to add (*Type \'None\' if not applicable): ')
@@ -181,19 +42,28 @@ def initial_prompt(server_base=server_base):
                 else:
                     new_server = [server_name, Graph(), server_extra_info]
 
-            server_base.add_to_tail(new_server)
-            time.sleep(0.2)
-            print("Your Server has been added. To view it, please type \'/view_servers\' or to access it, type \'/access_server\'")
-        
+                server_base.add_to_tail(new_server)
+                time.sleep(0.2)
+                print("Your Server has been added. To view it, please type \'/view_servers\' or to access it, type \'/access_server\'")
+            else:
+                print("That server is already registered in the software")
+                time.sleep(0.1)
+                print('We recommend to type \'/view_servers\' to view all the servers you have added.')
+
         elif user_prompt == '/remove_server':
-            sever_name = input('Please type in the name of the server: ')
-            if not server_name in server_base.nodes:
+            server_name = input('Please type in the name of the server: ')
+            if len(server_base.nodes) == 0:
+                print("There is no server to remove as the software has not registered anything yet! ")
+                time.sleep(0.1)
+            elif not server_name in server_base.nodes:
                 print("That server does not seem to be registered in this software currently ")
                 time.sleep(0.1)
-                print("Type \'/add_server\' to do so ")
+                print("We recommend to type \'/add_server\' to do so ")
                 time.sleep(0.1)
+        
             else:
                 server_base.remove_by_value(server_name)
+                server_base.nodes.remove(server_name)
                 time.sleep(0.1)
                 print('Server has been successfully deleted ')
         
@@ -201,7 +71,7 @@ def initial_prompt(server_base=server_base):
             if len(server_base.nodes) == 0:
                 print("There currently is no server registered on the software yet. ")
                 time.sleep(0.2)
-                print("\'/add_server\' to add a new server to the software ")
+                print("We recommend to type \'/add_server\' to add a new server to the software ")
             else:
                 print('Here are your current servers: ')
                 server_base.stringify_list()
@@ -212,22 +82,26 @@ def initial_prompt(server_base=server_base):
             if not server_name in server_base.nodes:
                 print("That server does not seem to be registered in this software currently ")
                 time.sleep(0.1)
-                print("Type \'/add_server\' to do so ")
+                print("We recommend to type \'/add_server\' to do so ")
                 time.sleep(0.1)
             else:
                 current_server = server_base.linear_search(server_name)
                 time.sleep(0.1)
-                test = Prompt(current_server)
+                test = Prompt(current_server[1])
                 print("You have succesfully loaded into the server. ")
                 time.sleep(0.2)
                 try:
-                    print('EXTRA INFO: {}'.format(current_server[3]))
+                    print('EXTRA INFO: {}'.format(current_server[2]))
                 except IndexError:
                     pass
+                print()
                 print(test.database())
         
         elif user_prompt == "/quit":
+            print('You have quit the software. ')
             break 
+        else:
+            print("That command seems to be invalid ")
 
 
 

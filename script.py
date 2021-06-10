@@ -258,7 +258,7 @@ class Prompt:
                         print('The Ip matches ')
 
             elif prompt == "/quit":
-                print('You have successfully quit')
+                print('You have successfully quit the server. ')
                 break 
             
             else:
