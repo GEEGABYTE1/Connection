@@ -1,5 +1,5 @@
 from pattern_search import pattern_search
-from graph import Graph
+#from database import current_server
 from vertex import Vertex
 import hashlib
 import time 
@@ -9,10 +9,12 @@ import random
 
 
 class Prompt:
-    wifibase = Graph()
-    unregistered_modems = [] 
-    registered_modems = []
-    latency = 0
+
+    def __init__(self, wifibase):
+        self.wifibase = wifibase                   # Returned Graph of the search algorithm 
+        self.unregistered_modems = [] 
+        self.registered_modems = []
+        self.latency = 0
 
     def database(self):
         
@@ -271,9 +273,7 @@ class Prompt:
 
 
 
-test = Prompt()
 
-test.database()
             
 
                 
